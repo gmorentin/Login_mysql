@@ -1,6 +1,8 @@
 // app/routes.js
 module.exports = function(app, passport) {
-
+	//var mysql = require('mysql');
+	//var dbconfig = require('../config/database');
+	//var connection = mysql.createConnection(dbconfig.connection);
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
@@ -13,26 +15,29 @@ module.exports = function(app, passport) {
 	// =====================================
 	// show the login form
 	app.get('/login', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
 
 	// process the login form
+	/*app.post('/login',(req,res)=>{
+		if(req.body.username=='gm')
+		res.redirect='/profile'
+		else
+		res.redirect='/profile'
+	});*/
 	app.post('/login', passport.authenticate('local-login', {
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
 		}),
         function(req, res) {
-            console.log("hello");
-
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
+			if (req.body.remember) {
+				req.session.cookie.maxAge = 1000 * 60 * 3;
             } else {
-              req.session.cookie.expires = false;
+				req.session.cookie.expires = false;
             }
-        res.redirect('/');
+			res.redirect('/');
     });
 
 	// =====================================
