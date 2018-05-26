@@ -44,10 +44,10 @@ module.exports = function(passport) {
             passwordField : 'password',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
-        function(req, username, password, done) {
+        function(req,username, password,done) {
+            //console.log(req.body);
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            console.log(connection.query("describe users2"));
             connection.query("SELECT * FROM users2 WHERE username = ?",[username], function(err, rows) {
                 if (err)
                     return done(err);
@@ -61,9 +61,9 @@ module.exports = function(passport) {
                         password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
                     };
 
-                    var insertQuery = "INSERT INTO users2 ( username, password ) values (?,?)";
+                    var insertQuery = "INSERT INTO users2 ( username, password, type) values (?,?,?)";
 
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password, req.body.type],function(err, rows) {
                         newUserMysql.id = rows.insertId;
 
                         return done(null, newUserMysql);
