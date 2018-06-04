@@ -1,6 +1,7 @@
 // app/routes.js
 module.exports = function (app, passport) {
 	app.set('view engine', 'hbs');
+	
 	app.get('/', function (req, res) {
 		res.render('login.hbs', { message: req.flash('loginMessage') }); // load the index.ejs file
 	});
